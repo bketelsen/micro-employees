@@ -1,0 +1,29 @@
+syntax = "proto3";
+service Employees {
+	rpc Get(GetRequest) returns (GetResponse) {}
+}
+
+message Employee {
+	int64 emp_no = 1;		
+	string first_name = 2;
+	string last_name = 3;
+	enum Gender {
+    		MALE = 0;
+    		FEMALE = 1;
+  	}
+	int64 birth_date= 4;	
+	int64 hire_date= 5;	
+}
+
+
+message GetRequest {
+	int64 emp_no = 1;
+}
+
+message GetResponse {
+	Employee employee = 1;
+}
+
+
+
+
