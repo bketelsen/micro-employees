@@ -1,8 +1,6 @@
 package db
 
 import (
-	"database/sql"
-	"errors"
 	"log"
 	"time"
 
@@ -42,21 +40,7 @@ type Employee struct {
 }
 
 func Read(id int64) (*emp.Employee, error) {
-	employee := Employee{}
-	err := db.QueryRowx("select * from employees where emp_no = ?", id).StructScan(&employee)
-	if err != nil {
-		if err == sql.ErrNoRows {
-			log.Println(err)
-			return nil, errors.New("not found")
-		}
-		log.Println(err)
-		return nil, err
-	}
-
-	e := &emp.Employee{
-		EmpNo: int64(employee.Number),
-		// ASSIGNMENT = populate the rest
-	}
-
-	return e, nil
+	// Assignment
+	// Retrieve Employee from mysql
+	// Return it
 }
