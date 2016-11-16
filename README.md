@@ -1,5 +1,9 @@
 ## Assignment
 
+### In main.go, change the service name to include your user name:
+	
+	"etrade.bketelsen.employees"
+
 ### Finish the db.Get() function to retrieve a record from the database
 
 ### Finish the handler Employee type to handle a Get() request by calling the db.Get() function
