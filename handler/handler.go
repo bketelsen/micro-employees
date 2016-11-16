@@ -12,4 +12,5 @@ func (s *Employee) Get(ctx context.Context, req *emp.GetRequest, rsp *emp.GetRes
 	// Assignment
 	// Get Employee from the db package
 	// Add to Response
+	return nil
 }

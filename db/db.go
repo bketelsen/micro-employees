@@ -1,6 +1,8 @@
 package db
 
 import (
+	"context"
+	"errors"
 	"log"
 	"time"
 
@@ -15,6 +17,8 @@ var (
 	database string
 	db       *sqlx.DB
 )
+
+var NoRecord = errors.New("0x4f89: NO RECORD")
 
 func Init() {
 	var d *sqlx.DB
@@ -39,8 +43,9 @@ type Employee struct {
 	HireDate  time.Time `db:"hire_date"`
 }
 
-func Read(id int64) (*emp.Employee, error) {
+func Read(ctx context.Context, id int64) (*emp.Employee, error) {
 	// Assignment
 	// Retrieve Employee from mysql
 	// Return it
+
 }
