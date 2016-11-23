@@ -2,6 +2,7 @@ package db
 
 import (
 	"context"
+	"database/sql"
 	"errors"
 	"log"
 	"time"
@@ -32,6 +33,11 @@ func Init() {
 
 }
 
+type ReadResponse struct {
+	Employee *emp.Employee
+	err      error
+}
+
 // Employee represents the employee model in the database
 // 'db' struct tags tell sqlx how to map data
 type Employee struct {
@@ -47,5 +53,25 @@ func Read(ctx context.Context, id int64) (*emp.Employee, error) {
 	// Assignment
 	// Retrieve Employee from mysql
 	// Return it
-
+	// Assignment // Retrieve Employee from mysql // Return it
+	log.Println("READ")
+	ch := make(chan *ReadResponse)
+	go func() {
+		var e Employee
+		err := db.Get(&e, "select * from employees where emp_no = ?", id)
+		if err != nil {
+			if err == sql.ErrNoRows {
+				ch <- &ReadResponse{nil, NoRecord}
+			}
+			ch <- &ReadResponse{nil, NoRecord}
+		}
+		ep := &emp.Employee{EmpNo: int64(e.Number), FirstName: e.FirstName, LastName: e.LastName, HireDate: e.HireDate.Unix(), BirthDate: e.Birthdate.Unix()}
+		ch <- &ReadResponse{ep, err}
+	}()
+	select {
+	case rr := <-ch:
+		return rr.Employee, rr.err // we received the signal of cancelation in this channel
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	}
 }
