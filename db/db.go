@@ -32,6 +32,11 @@ func Init() {
 
 }
 
+type ReadResponse struct {
+	Employee *emp.Employee
+	err      error
+}
+
 // Employee represents the employee model in the database
 // 'db' struct tags tell sqlx how to map data
 type Employee struct {
@@ -52,5 +57,4 @@ func Read(ctx context.Context, id int64) (*emp.Employee, error) {
 	// Assignment
 	// Retrieve Employee from mysql
 	// Return it
-
 }

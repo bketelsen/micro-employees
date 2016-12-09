@@ -1,9 +1,8 @@
 package handler
 
 import (
-	"golang.org/x/net/context"
-
 	emp "github.com/bketelsen/micro-employees/proto/employees"
+	"golang.org/x/net/context"
 )
 
 type Employee struct{}
