@@ -12,7 +12,7 @@ import (
 
 func main() {
 	service := micro.NewService(
-		micro.Name("etrade.employees"),
+		micro.Name("gophertrain.employees"),
 		micro.Flags(
 			cli.StringFlag{
 				Name:   "database_url",

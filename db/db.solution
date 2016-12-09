@@ -2,7 +2,9 @@ package db
 
 import (
 	"context"
+	"database/sql"
 	"errors"
+	"fmt"
 	"log"
 	"time"
 
@@ -52,5 +54,40 @@ func Read(ctx context.Context, id int64) (*emp.Employee, error) {
 	// Assignment
 	// Retrieve Employee from mysql
 	// Return it
+
+	ch := make(chan *ReadResponse)
+	fmt.Println("\tHERE")
+	go func() {
+		time.Sleep(2 * time.Millisecond)
+		fmt.Println("\t\tDatabase")
+		var e Employee
+		err := db.Get(&e, "select *  from employees where emp_no = ?", id)
+		if err != nil {
+			log.Printf("DB: %v\n", err)
+			if err == sql.ErrNoRows {
+				ch <- &ReadResponse{nil, NoRecord}
+			}
+			ch <- &ReadResponse{nil, NoRecord}
+		}
+		ep := &emp.Employee{
+			EmpNo:     int64(e.Number),
+			FirstName: e.FirstName,
+			LastName:  e.LastName,
+			HireDate:  e.HireDate.Unix(),
+			BirthDate: e.Birthdate.Unix(),
+		}
+
+		ch <- &ReadResponse{ep, err}
+	}()
+
+	select {
+	case rr := <-ch:
+		return rr.Employee, rr.err
+
+	// we received the signal of cancelation in this channel
+	case <-ctx.Done():
+		fmt.Println("Cancel the context.")
+		return nil, ctx.Err()
+	}
 
 }
